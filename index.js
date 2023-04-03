@@ -14,6 +14,7 @@ let maxPage;
 let page = 1;
 let searchQuery = "";
 
+//fetches the api data either from a specific page(page) or a specific character name(query) and returns it
 async function fetchCharacters(page, query) {
   cardContainer.innerHTML = ``;
   try {
@@ -23,7 +24,6 @@ async function fetchCharacters(page, query) {
         "&name=" +
         query
     );
-
     if (!response.ok) {
       console.error("response not okay");
     }
@@ -33,10 +33,10 @@ async function fetchCharacters(page, query) {
     console.error("an error occurred");
   }
 }
-async function loadPage() {
+//calls the fetch-function and renders the returned data onto the main page
+async function renderPage() {
   const apiData = await fetchCharacters(page, searchQuery);
-  maxPage = apiData.info.pages;
-  console.log(apiData);
+  maxPage = apiData.info.pages; //reads out the max page number out of the api data
   apiData.results.forEach((element) => {
     cardContainer.append(
       createCharacterCard(
@@ -48,21 +48,21 @@ async function loadPage() {
       )
     );
   });
-  pagination.textContent = `${page}/${maxPage}`;
+  pagination.textContent = `${page}/${maxPage}`; //updates the pagination text
 }
-loadPage();
+renderPage();
 
 nextButton.addEventListener("click", () => {
   if (page < maxPage) {
     page++;
-    loadPage();
+    renderPage();
   }
 });
 
 prevButton.addEventListener("click", () => {
   if (page > 1) {
     page--;
-    loadPage();
+    renderPage();
   }
 });
 
@@ -70,8 +70,8 @@ searchBar.addEventListener("submit", (event) => {
   event.preventDefault();
   page = 1;
   const formData = new FormData(event.target);
-  const data = Object.fromEntries(formData);
+  const data = Object.fromEntries(formData); //reads out the formdata and puts the textcontent into the searchQuery variable
   searchQuery = data.query;
-  fetchCharacters(page, searchQuery);
-  loadPage();
+  fetchCharacters(page, searchQuery); //calls the fetch + render function
+  renderPage();
 });
