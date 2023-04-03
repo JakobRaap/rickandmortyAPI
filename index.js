@@ -61,3 +61,9 @@ prevButton.addEventListener("click", () => {
     loadPage();
   }
 });
+
+searchBar.addEventListener("submit", (event) => {
+  event.preventDefault();
+  console.log(event.target.value);
+  //searchQuery
+});
