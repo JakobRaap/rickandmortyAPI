@@ -55,3 +55,9 @@ nextButton.addEventListener("click", () => {
     loadPage();
   }
 });
+prevButton.addEventListener("click", () => {
+  if (page > 1) {
+    page--;
+    loadPage();
+  }
+});
